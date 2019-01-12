@@ -4,7 +4,9 @@
   "description": "Simple game based in socket technology.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:dev": "webpack --mode=development --config=webpack.config.js",
+    "start:dev": "webpack-dev-server --mode=development --config=webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,19 @@
   "bugs": {
     "url": "https://github.com/ClaudiuBogdan/SocketGame/issues"
   },
-  "homepage": "https://github.com/ClaudiuBogdan/SocketGame#readme"
+  "homepage": "https://github.com/ClaudiuBogdan/SocketGame#readme",
+  "dependencies": {
+    "phaser": "^3.15.1"
+  },
+  "devDependencies": {
+    "@babel/core": "latest",
+    "babel-loader": "latest",
+    "@babel/plugin-transform-runtime": "latest",
+    "@babel/polyfill": "latest",
+    "@babel/preset-env": "latest",
+    "copy-webpack-plugin": "^4.6.0",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  }
 }
