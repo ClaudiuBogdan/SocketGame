@@ -2,7 +2,7 @@
 
 export default class ColorUtil {
   static getRandomColor() {
-    let randomColor = "0x";
+    let randomColor = "";
     randomColor += this.convertNumberToHex(
       Math.floor(Math.random() * 255 + 1).toString(16)
     );
