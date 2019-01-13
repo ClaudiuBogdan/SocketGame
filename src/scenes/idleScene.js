@@ -1,7 +1,8 @@
 "use strict";
-import "phaser";
+import Phaser from "phaser";
 import ColorUtil from "../util/ColorUtil";
 import Request from "../network/Request";
+import SocketConnection from "../network/SocketConnection";
 
 export default class IdleScene extends Phaser.Scene {
   constructor() {
@@ -13,8 +14,7 @@ export default class IdleScene extends Phaser.Scene {
   }
 
   create() {
-    this.player = { id: null, name: "none", color: "#eeeeee" };
-    this.createSocketConnection();
+    this.player = SocketConnection.__proto__.instance.player;
     const nameLabelText = this.add.text(
       this.game.config.width / 2,
       this.game.config.height / 3,
@@ -36,10 +36,16 @@ export default class IdleScene extends Phaser.Scene {
     chooseColorText.setOrigin(0.5, 0);
     chooseColorText.setInteractive();
     chooseColorText.on("pointerdown", () => {
+      this.player = SocketConnection.getInstance().player;
       let playerName = document.getElementById("nameInput").value;
       Request.postPlayerData(this.player.id, playerName, "#" + color)
         .then(response => {
-          console.log(response.data.data);
+          SocketConnection.getInstance().player.name = response.data.data.name;
+          SocketConnection.getInstance().player.color =
+            response.data.data.color;
+          document.body.removeChild(document.getElementById("nameInput"));
+
+          this.startGame();
         })
         .catch(error => {
           console.log(error);
@@ -47,17 +53,14 @@ export default class IdleScene extends Phaser.Scene {
     });
   }
 
-  createSocketConnection() {
-    const ws = new WebSocket("ws://app-mobile-api.herokuapp.com");
-
-    ws.onopen = function open(data) {
-      //ws.send("something");
-    };
-
-    ws.onmessage = data => {
-      if (!this.player.id) this.player = JSON.parse(data.data);
-      //console.log(data);
-    };
-    return ws;
+  startGame() {
+    this.scene.transition({
+      target: "GameScene",
+      duration: 1,
+      onUpdate: this.transitionOut,
+      moveAbove: true,
+      data: { from: "GameScene" }
+    });
+    this.scene.start("GameScene", { from: "finishScene" });
   }
 }
