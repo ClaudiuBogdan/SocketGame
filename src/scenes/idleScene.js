@@ -54,13 +54,13 @@ export default class IdleScene extends Phaser.Scene {
   }
 
   startGame() {
-    this.scene.transition({
-      target: "GameScene",
-      duration: 1,
-      onUpdate: this.transitionOut,
-      moveAbove: true,
-      data: { from: "GameScene" }
-    });
+    // this.scene.transition({
+    //   target: "GameScene",
+    //   duration: 1,
+    //   onUpdate: this.transitionOut,
+    //   moveAbove: true,
+    //   data: { from: "GameScene" }
+    // });
     this.scene.start("GameScene", { from: "finishScene" });
   }
 }

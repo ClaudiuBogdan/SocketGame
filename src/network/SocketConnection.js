@@ -27,10 +27,14 @@ export default class SocketConnection {
 
   async createSocketConnection() {
     return new Promise((resolve, reject) => {
-      const ws = new WebSocket("ws://app-mobile-api.herokuapp.com");
+      const localUrl = "ws://localhost:8083";
+      const herokuUrl = "wss://app-mobile-api.herokuapp.com";
+      const socketUrl = herokuUrl;
+      const ws = new WebSocket(socketUrl);
 
       ws.onopen = function open(data) {
         //ws.send("something");
+        console.log("conn opened");
       };
 
       ws.onmessage = data => {
